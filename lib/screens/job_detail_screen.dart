@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../models/job_listing.dart';
 
 class JobDetailScreen extends StatefulWidget {
@@ -83,7 +85,8 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                     SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: _applied ? null : _applyForJob,
-                      child: Text(_applied ? 'Applied' : 'Apply Now'),
+                      child: Text(
+                          _applied ? 'You have applied to job' : 'Apply Now'),
                     ),
                   ],
                 ),
@@ -95,7 +98,23 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
     );
   }
 
-  void _applyForJob() {
+  @override
+  void initState() {
+    super.initState();
+    _checkIfApplied();
+  }
+
+  void _checkIfApplied() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool alreadyApplied = prefs.containsKey(widget.jobListing.jobId.toString());
+    setState(() {
+      _applied = alreadyApplied;
+    });
+  }
+
+  void _applyForJob() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(widget.jobListing.jobId.toString(), 'applied');
     setState(() {
       _applied = true;
     });

@@ -1,4 +1,5 @@
 class JobListing {
+  final int jobId;
   final String title;
   final String company;
   final String logo;
@@ -10,6 +11,7 @@ class JobListing {
   final String benefits; // Additional field for job benefits
 
   JobListing({
+    required this.jobId,
     required this.title,
     required this.company,
     required this.logo,

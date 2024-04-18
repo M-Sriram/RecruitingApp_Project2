@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+
+import 'models/post.dart';
 import 'screens/candidates_screen.dart';
 import 'screens/create_post_screen.dart';
 import 'screens/job_listings_screen.dart';
-import 'models/post.dart';
 import 'screens/post_detail_screen.dart';
 
 void main() async {
@@ -67,31 +68,75 @@ class HomeScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(height: 20),
-          Text(
-            'Welcome to the Recruiting Application!',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
+
+          //Code update by Singh
+          Container(
+            margin: EdgeInsets.fromLTRB(16, 8, 16, 8),
+            child: Text(
+              'Welcome to the Recruiting Application!',
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
+          //End
+
           const SizedBox(height: 20),
           Expanded(
             child: ListView.builder(
               itemCount: posts.length,
               itemBuilder: (context, index) {
                 final post = posts[index];
-                return ListTile(
-                  title: Text(post.title),
-                  subtitle: Text(post.author),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PostDetailScreen(post: post),
+
+                //Code update by Singh
+                return Card(
+                  elevation: 5, // Adds shadow under the card
+                  margin: EdgeInsets.fromLTRB(16, 8, 16, 8),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                        10), // Rounded corners for the card
+                  ),
+                  child: ListTile(
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+                    title: Text(
+                      post.title,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
                       ),
-                    );
-                  },
+                    ),
+                    subtitle: Text(post.author),
+                    trailing: Icon(Icons.arrow_forward_ios),
+                    onTap: () {
+                      //**Singh**//
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  PostDetailScreen(post: post),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            var begin = Offset(0.0, 1.0);
+                            var end = Offset.zero;
+                            var curve = Curves.ease;
+
+                            var tween = Tween(begin: begin, end: end)
+                                .chain(CurveTween(curve: curve));
+                            var offsetAnimation = animation.drive(tween);
+
+                            return SlideTransition(
+                              position: offsetAnimation,
+                              child: child,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
                 );
+                //End
               },
             ),
           ),
@@ -104,15 +149,17 @@ class HomeScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Menu'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: [
-                _buildMenuItem(context, 'Candidates', '/candidates'),
-                _buildMenuItem(context, 'Create Post', '/create_post'),
-                _buildMenuItem(context, 'Job Listings', '/job_listings'),
-              ],
+        return DialogAnimation(
+          child: AlertDialog(
+            title: Text('Menu'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: [
+                  _buildMenuItem(context, 'Candidates', '/candidates'),
+                  _buildMenuItem(context, 'Create Post', '/create_post'),
+                  _buildMenuItem(context, 'Job Listings', '/job_listings'),
+                ],
+              ),
             ),
           ),
         );
@@ -127,6 +174,35 @@ class HomeScreen extends StatelessWidget {
         Navigator.pop(context); // Close the menu
         Navigator.pushNamed(context, route);
       },
+    );
+  }
+}
+
+//Code update by Singh
+class DialogAnimation extends StatelessWidget {
+  final Widget child;
+
+  DialogAnimation({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedPadding(
+      // Add some padding at the bottom to create a slide-up effect
+      padding:
+          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      duration: const Duration(milliseconds: 100),
+      curve: Curves.decelerate,
+      child: SlideTransition(
+        // Apply slide-up animation
+        position: Tween<Offset>(
+          begin: const Offset(0.0, 1.0),
+          end: Offset.zero,
+        ).animate(CurvedAnimation(
+          parent: ModalRoute.of(context)!.animation!,
+          curve: Curves.fastOutSlowIn,
+        )),
+        child: child,
+      ),
     );
   }
 }
