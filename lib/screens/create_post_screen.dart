@@ -9,6 +9,13 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   final _formKey = GlobalKey<FormState>();
   String _title = '';
   String _content = '';
+  late DateTime _dateTime; // Adding DateTime property
+
+  @override
+  void initState() {
+    super.initState();
+    _dateTime = DateTime.now(); // Initializing dateTime to current time
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,11 +76,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    // Here, you can add the logic to save the post
-                    print('Title: $_title');
-                    print('Content: $_content');
-                    // Pass the title and content back to the home screen
-                    Navigator.pop(context, {'title': _title, 'content': _content});
+
+                    // Pass the title, content, and dateTime back to the home screen
+                    Navigator.pop(context, {'title': _title, 'content': _content, 'dateTime': _dateTime});
                   }
                 },
                 child: Text('Create Post'),

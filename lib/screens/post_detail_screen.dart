@@ -16,8 +16,8 @@ class PostDetailScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(post.title),
-          Text(post.author),
-          // Add more details about the post if needed
+          Text(post.content),
+
         ],
       ),
     );
