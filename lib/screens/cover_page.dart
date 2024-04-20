@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 
 class CoverPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF9EBDE), // Background color for the entire page
+      backgroundColor: const Color(0xFFF9EBDE),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF815854), // Background color for the app bar
+        backgroundColor: const Color(0xFF815854),
         title: Text(
           'Team Members',
-          style: TextStyle(color: Colors.white), // Text color for the app bar title
+          style: TextStyle(color: Colors.white),
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.menu), // Menu icon
+            icon: Icon(Icons.menu),
             onPressed: () {
-              _showMenu(context); // Show the menu when the icon is pressed
+              _showMenu(context);
             },
           ),
         ],
@@ -30,24 +29,34 @@ class CoverPage extends StatelessWidget {
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: const Color(0xFF815854), // Text color for the heading
+                color: const Color(0xFF815854),
               ),
             ),
             SizedBox(height: 20),
-            // Member names with their ID numbers
             _buildMember('Sonali Sachdev', '8826040'),
             _buildMember('Sriram Mekala', '8906745'),
             _buildMember('Druvansh Balar', '8856778'),
             _buildMember('Jodhwinder Singh', '8831809'),
-            // Add more member names as needed
             SizedBox(height: 20),
             Text(
-              'Course Code: PROG8700', // Heading for the course code
+              'Course Code: PROG8700',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: const Color(0xFF815854), // Text color for the heading
+                color: const Color(0xFF815854),
               ),
+            ),
+            SizedBox(height: 10),
+            Text(
+              '1. Sonali - Worked on Post Functionality and Create Post Screen,\n'
+                  '2. Sriram - Worked on Candidates Functionality, Candidates Screen, Candidate Details Screen, and Connections Screen,\n'
+                  '3. Druvansh - Worked on Job Listing Functionality, Job Details Screen, Job Listing Screen,\n'
+                  '4. Jodhwinder - Worked on the Animation part of the entire project, Animation and Design.',
+              style: TextStyle(
+                fontSize: 16,
+                color: const Color(0xFF333333),
+              ),
+              textAlign: TextAlign.center,
             ),
           ],
         ),
@@ -55,7 +64,6 @@ class CoverPage extends StatelessWidget {
     );
   }
 
-  // Function to show the menu dialog
   void _showMenu(BuildContext context) {
     showDialog(
       context: context,
@@ -68,8 +76,7 @@ class CoverPage extends StatelessWidget {
                 _buildMenuItem(context, 'Home', '/'),
                 _buildMenuItem(context, 'Candidates', '/candidates'),
                 _buildMenuItem(context, 'Create Post', '/create_post'),
-                _buildMenuItem(context, 'Job Listings', '/job_listings'),// Menu item to navigate to the home screen
-                // Add more menu items as needed
+                _buildMenuItem(context, 'Job Listings', '/job_listings'),
               ],
             ),
           ),
@@ -78,24 +85,22 @@ class CoverPage extends StatelessWidget {
     );
   }
 
-  // Function to build a menu item widget
   Widget _buildMenuItem(BuildContext context, String title, String route) {
     return ListTile(
       title: Text(title),
       onTap: () {
-        Navigator.pop(context); // Close the menu dialog
-        Navigator.pushNamed(context, route); // Navigate to the specified route
+        Navigator.pop(context);
+        Navigator.pushNamed(context, route);
       },
     );
   }
 
-  // Function to build a widget for a team member with name and ID
   Widget _buildMember(String name, String id) {
     return Text(
-      '$name ($id)', // Concatenating name and ID
+      '$name ($id)',
       style: TextStyle(
         fontSize: 18,
-        color: const Color(0xFF333333), // Text color for the member name
+        color: const Color(0xFF333333),
       ),
     );
   }

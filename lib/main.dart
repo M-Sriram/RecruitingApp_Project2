@@ -122,6 +122,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
+                ),ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/cover_page');
+                  },
+                  child: Text('Cover Page'),
                 ),
               ],
             ),
