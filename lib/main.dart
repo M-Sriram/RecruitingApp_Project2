@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:project2_recruiting/screens/cover_page.dart';
+import 'package:project2_recruiting/screens/create_post_screen.dart';
 import 'screens/candidates_screen.dart';
-import 'screens/create_post_screen.dart';
 import 'screens/job_listings_screen.dart';
 import 'models/post.dart';
 import 'screens/post_detail_screen.dart';
@@ -45,17 +46,11 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => HomeScreen(posts: posts),
         '/candidates': (context) => CandidatesScreen(),
-        '/create_post': (context) => CreatePostScreen(onPostCreated: _handlePostCreated),
         '/job_listings': (context) => JobListingsScreen(),
+        '/cover_page': (context) => CoverPage(),
+        '/create_post': (context) => CreatePostScreen(),
       },
     );
-  }
-
-  // Callback function to handle post creation
-  void _handlePostCreated(String title, String content) {
-    // Create a new post and add it to the posts list
-    Post newPost = Post(title: title, content: content);
-    posts.add(newPost);
   }
 }
 
@@ -118,15 +113,20 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         children: [
           const SizedBox(height: 20),
           Center(
-            child: Text(
-              'Welcome to the Recruiting Application!',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
+            child: Column(
+              children: [
+                Text(
+                  'Welcome to the Recruiting Application!',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
             ),
           ),
+
           const SizedBox(height: 20),
           Expanded(
             child: ListView.builder(
@@ -212,8 +212,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             child: ListBody(
               children: [
                 _buildMenuItem(context, 'Candidates', '/candidates'),
-                _buildMenuItem(context, 'Create Post', '/create_post'),
                 _buildMenuItem(context, 'Job Listings', '/job_listings'),
+                _buildMenuItem(context, 'Cover Page', '/cover_page'),
+                _buildMenuItem(context, 'Create Post', '/create_post'),
               ],
             ),
           ),
@@ -229,108 +230,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         Navigator.pop(context);
         Navigator.pushNamed(context, route);
       },
-    );
-  }
-}
-
-class CreatePostScreen extends StatefulWidget {
-  final Function(String title, String content) onPostCreated;
-
-  const CreatePostScreen({Key? key, required this.onPostCreated}) : super(key: key);
-
-  @override
-  _CreatePostScreenState createState() => _CreatePostScreenState();
-}
-
-class _CreatePostScreenState extends State<CreatePostScreen> {
-  final _formKey = GlobalKey<FormState>();
-  String _title = '';
-  String _content = '';
-  late DateTime _dateTime; // Adding DateTime property
-
-  @override
-  void initState() {
-    super.initState();
-    _dateTime = DateTime.now(); // Initializing dateTime to current time
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Create Post'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                'Create Post',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white, // Set text color to white
-                ),
-              ),
-              SizedBox(height: 16.0),
-              TextFormField(
-                style: TextStyle(color: Colors.white), // Set text color to white
-                decoration: InputDecoration(
-                  hintText: 'Enter post title',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a title';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _title = value!;
-                },
-              ),
-              SizedBox(height: 16.0),
-              TextFormField(
-                style: TextStyle(color: Colors.white), // Set text color to white
-                maxLines: 5,
-                decoration: InputDecoration(
-                  hintText: 'Enter post content',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter some content';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _content = value!;
-                },
-              ),
-              SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    // Here, you can add the logic to save the post
-                    print('Title: $_title');
-                    print('Content: $_content');
-                    print('DateTime: $_dateTime'); // Print the dateTime
-                    // Pass the title and content back to the home screen
-                    widget.onPostCreated(_title, _content);
-                    Navigator.pop(context);
-                  }
-                },
-                child: Text('Create Post', style: TextStyle(color: Colors.white)), // Set text color to white
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }
@@ -361,13 +260,13 @@ class PostDetailScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              post.title,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white), // Set text color to white
+              'Title: ${post.title}',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
             ),
             SizedBox(height: 16),
             Text(
-              post.content,
-              style: TextStyle(fontSize: 16, color: Colors.white), // Set text color to white
+              'Content: ${post.content}',
+              style: TextStyle(fontSize: 16, color: Colors.black),
             ),
           ],
         ),

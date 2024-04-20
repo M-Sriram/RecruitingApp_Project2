@@ -170,7 +170,9 @@ class JobListingsScreen extends StatelessWidget {
     ];
 
     return Scaffold(
+      backgroundColor: const Color(0xFFF9EBDE),
       appBar: AppBar(
+        backgroundColor: const Color(0xFF815854),
         title: Text('Job Listings'),
       ),
       body: ListView.builder(
